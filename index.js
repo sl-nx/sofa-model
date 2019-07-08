@@ -1,5 +1,4 @@
 var validate = require('validate.js'),
-    Promise = require('bluebird'),
     merge = require('deepmerge'),
     sanitize = require('./sanitize'),
     utils = require('./utils');
