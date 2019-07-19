@@ -3,13 +3,11 @@ Sofa Model
 
 Sofa Model is a simple model class to sanitize and validate your data. It is 100% data store agnostic and perfect for use with schema-less NoSQL DBs like CouchDB.
 
-Right now it is built for Node.js, but browser support is coming soon. It can be used 100% synchronously, or asynchronously based on Promises.
-
-For issues and feature requests visit the [issue tracker](https://github.com/colinskow/sofa-model/issues).
+For issues and feature requests visit the [issue tracker](https://github.com/LyteFM/sofa-model/issues).
 
 Build status
 ---
-[![Build Status](https://travis-ci.org/colinskow/sofa-model.png?branch=master)](https://travis-ci.org/colinskow/sofa-model)
+[![Build Status](https://travis-ci.org/colinskow/sofa-model.png?branch=master)](https://travis-ci.org/LyteFM/sofa-model)
 
 Basic Usage
 ---
