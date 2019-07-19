@@ -3,10 +3,7 @@ var validate = require('validate.js'),
     sanitize = require('./sanitize'),
     utils = require('./utils');
 
-validate.Promise = function(callback) {
-  return new Promise(callback);
-};
-
+    
 module.exports = function(options) {
   return function(record) {
     var self = this;
