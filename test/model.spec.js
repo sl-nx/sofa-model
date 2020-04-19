@@ -1,37 +1,35 @@
-var expect = require('chai').expect;
-var model = require('../index');
+const expect = require('chai').expect;
+const model = require('../index');
 
-var testData = {
-  name: "Colin ",
-  age: "17",
+const testData = {
+  name: 'Colin ',
+  age: '17',
   telephones: {
-    home: "123",
-    mobile: "456"
+    home: '123',
+    mobile: '456'
   },
-  role: "admin",
-  rename: "test"
+  role: 'admin',
+  rename: 'test'
 };
 
-var testModelOptions = {
-  blacklist: [
-    "role"
-  ],
+const testModelOptions = {
+  blacklist: ['role'],
   customSanitizers: {
-    addMister:  function(data) {
-      return "Mr. " + data;
+    addMister: function (data) {
+      return 'Mr. ' + data;
     }
   },
   sanitize: {
-    name: ["trim", "toUpperCase", "addMister"],
-    age: "toInt",
-    "telephones.home": {prepend: "+1 "},
-    "telephones.mobile": {prepend: "+1 "}
+    name: ['trim', 'toUpperCase', 'addMister'],
+    age: 'toInt',
+    'telephones.home': { prepend: '+1 ' },
+    'telephones.mobile': { prepend: '+1 ' }
   },
   customValidators: {
-    checkMiss: function(value) {
-      var regex = /^Ms\.\s/;
-      if(!regex.test(value)) {
-        return "oh snap, " + value + " is not a Miss!";
+    checkMiss: function (value) {
+      const regex = /^Ms\.\s/;
+      if (!regex.test(value)) {
+        return 'oh snap, ' + value + ' is not a Miss!';
       }
     }
   },
@@ -46,30 +44,29 @@ var testModelOptions = {
         onlyInteger: true,
         greaterThanOrEqualTo: 21,
         lessThan: 150,
-        message: "invalid age"
+        message: 'invalid age'
       }
     },
-    "telephones.home": {
+    'telephones.home': {
       presence: true
     },
-    "telephones.work": {
+    'telephones.work': {
       presence: true
     }
   },
   static: {
-    role: "user"
+    role: 'user'
   },
   rename: {
-    rename: "renamed"
+    rename: 'renamed'
   }
 };
 
-describe('Model', function() {
-
-  it('Should behave as expected synchronously', function() {
-    var user = new model(testModelOptions);
-    var testUser = new user(testData);
-    var results = testUser.process().results;
+describe('Model', function () {
+  it('Should behave as expected synchronously', function () {
+    const user = new model(testModelOptions);
+    const testUser = new user(testData);
+    const results = testUser.process().results;
     expect(results.name).to.equal('Mr. COLIN');
     expect(results.age).to.be.a('number');
     expect(results.telephones.home).to.equal('+1 123');
@@ -81,58 +78,57 @@ describe('Model', function() {
     expect(results).not.to.have.property('rename');
   });
 
-  it('Should whitelist objects correctly', function() {
-    var options = {
+  it('Should whitelist objects correctly', function () {
+    const options = {
       whitelist: ['name', 'telephones.home']
     };
-    var user = new model(options);
-    var testUser = new user(testData);
-    var results = testUser.whitelist().results;
+    const user = new model(options);
+    const testUser = new user(testData);
+    const results = testUser.whitelist().results;
     expect(results).to.have.property('name');
     expect(results).to.have.deep.property('telephones.home');
     expect(results).to.not.have.property('age');
   });
 
-  it('Should merge the results on top of another object', function() {
-    var user = new model(testModelOptions);
-    var testUser = new user(testData);
-    var original = {
-      name: "Bob",
+  it('Should merge the results on top of another object', function () {
+    const user = new model(testModelOptions);
+    const testUser = new user(testData);
+    const original = {
+      name: 'Bob',
       secret: "don't tell",
       telephones: {
-        office: "789"
+        office: '789'
       }
     };
-    var results = testUser.merge(original).results;
-    expect(results.name).to.equal("Colin ");
+    const results = testUser.merge(original).results;
+    expect(results.name).to.equal('Colin ');
     expect(results.secret).to.equal("don't tell");
-    expect(results.telephones.home).to.equal("123");
-    expect(results.telephones.office).to.equal("789");
+    expect(results.telephones.home).to.equal('123');
+    expect(results.telephones.office).to.equal('789');
   });
 
-  it('Should behave as expected asynchronously', function(done) {
+  it('Should behave as expected asynchronously', function (done) {
     testModelOptions.async = true;
-    var user = new model(testModelOptions);
-    var testUser = new user(testData);
-    testUser.process()
-      .then(function() {
-        throw new Error('Validation promise should have been rejected.');
-      }, function(errors) {
-        expect(errors).to.have.property('name');
-        expect(errors).to.have.property('age');
-        expect(errors).to.have.property('telephones.work');
-      })
-      .finally(function() {
+    const user = new model(testModelOptions);
+    let testUser = new user(testData);
+    testUser
+      .process()
+      .then(
+        function () {
+          throw new Error('Validation promise should have been rejected.');
+        },
+        function (errors) {
+          expect(errors).to.have.property('name');
+          expect(errors).to.have.property('age');
+          expect(errors).to.have.property('telephones.work');
+        }
+      )
+      .finally(function () {
         testUser = new user(testData);
-        testUser.sanitize()
-          .then(function(results) {
-            expect(results.name).to.equal('Mr. COLIN');
-            done();
-          });
+        testUser.sanitize().then(function (results) {
+          expect(results.name).to.equal('Mr. COLIN');
+          done();
+        });
       });
   });
-
 });
-
-
-

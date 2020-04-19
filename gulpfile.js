@@ -1,13 +1,12 @@
-var { src, series } = require('gulp'), 
-  jshint = require('gulp-jshint'),
-  stylish = require('jshint-stylish'),
+const { src, series } = require('gulp'),
+  eslint = require('gulp-eslint'),
   mocha = require('gulp-mocha');
 
 function lint() {
   return src(['./*.js', './test/*.js'])
-    .pipe(jshint({ node: true, mocha: true }))
-    .pipe(jshint.reporter(stylish))
-    .pipe(jshint.reporter('fail'));
+    .pipe(eslint({ node: true, mocha: true }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 }
 
 function test() {

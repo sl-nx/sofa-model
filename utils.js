@@ -7,12 +7,12 @@
  * @return {object|undefined} a reference to the requested key or undefined if not found
  */
 
-exports.getObjectRef = function(obj, str) {
+exports.getObjectRef = function (obj, str) {
   str = str.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-  str = str.replace(/^\./, '');           // strip a leading dot
-  var pList = str.split('.');
+  str = str.replace(/^\./, ''); // strip a leading dot
+  const pList = str.split('.');
   while (pList.length) {
-    var n = pList.shift();
+    const n = pList.shift();
     if (n in obj) {
       obj = obj[n];
     } else {
@@ -31,19 +31,19 @@ exports.getObjectRef = function(obj, str) {
  * @param {*} val The value you want to set the property to
  */
 
-exports.setObjectRef = function(obj, str, val) {
+exports.setObjectRef = function (obj, str, val) {
   str = str.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-  str = str.replace(/^\./, '');           // strip a leading dot
-  var pList = str.split('.');
-  var len = pList.length;
-  for(var i = 0; i < len-1; i++) {
-    var elem = pList[i];
-    if( !obj[elem] ) {
+  str = str.replace(/^\./, ''); // strip a leading dot
+  const pList = str.split('.');
+  const len = pList.length;
+  for (let i = 0; i < len - 1; i++) {
+    const elem = pList[i];
+    if (!obj[elem]) {
       obj[elem] = {};
     }
     obj = obj[elem];
   }
-  obj[pList[len-1]] = val;
+  obj[pList[len - 1]] = val;
 };
 
 /**
@@ -54,19 +54,19 @@ exports.setObjectRef = function(obj, str, val) {
  * @return {boolean} true if successful
  */
 
-exports.delObjectRef = function(obj, str) {
+exports.delObjectRef = function (obj, str) {
   str = str.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-  str = str.replace(/^\./, '');           // strip a leading dot
-  var pList = str.split('.');
-  var len = pList.length;
-  for(var i = 0; i < len-1; i++) {
-    var elem = pList[i];
-    if( !obj[elem] ) {
+  str = str.replace(/^\./, ''); // strip a leading dot
+  const pList = str.split('.');
+  const len = pList.length;
+  for (let i = 0; i < len - 1; i++) {
+    const elem = pList[i];
+    if (!obj[elem]) {
       return false;
     }
     obj = obj[elem];
   }
-  delete obj[pList[len-1]];
+  delete obj[pList[len - 1]];
   return true;
 };
 
@@ -78,9 +78,6 @@ exports.delObjectRef = function(obj, str) {
  * @return {boolean} True if the object is an array, false otherwise
  */
 
-exports.isArray = function(obj) {
+exports.isArray = function (obj) {
   return Object.prototype.toString.call(obj) === '[object Array]';
 };
-
-
-

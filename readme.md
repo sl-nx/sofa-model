@@ -1,60 +1,56 @@
-Sofa Model
-===
+# Sofa Model
 
 Sofa Model is a simple model class to sanitize and validate your data. It is 100% data store agnostic and perfect for use with schema-less NoSQL DBs like CouchDB.
 
 For issues and feature requests visit the [issue tracker](https://github.com/LyteFM/sofa-model/issues).
 
-Build status
----
+## Build status
+
 [![Build Status](https://travis-ci.org/colinskow/sofa-model.png?branch=master)](https://travis-ci.org/LyteFM/sofa-model)
 
-Basic Usage
----
+## Basic Usage
 
 ```javascript
 var Model = require('sofa-model');
 
 var testData = {
-  name: "Colin ",
-  age: "17",
+  name: 'Colin ',
+  age: '17',
   telephones: {
-    home: "123",
-    mobile: "456"
+    home: '123',
+    mobile: '456'
   },
-  role: "admin"
+  role: 'admin'
 };
 
 var userModelOptions = {
-  blacklist: [
-    "role"
-  ],
+  blacklist: ['role'],
   sanitize: {
-    name: ["trim", "toUpperCase"],
-    age: "toInt",
-    "telephones.home": {prepend: "+1 "},
-    "telephones.mobile": {prepend: "+1 "}
+    name: ['trim', 'toUpperCase'],
+    age: 'toInt',
+    'telephones.home': { prepend: '+1 ' },
+    'telephones.mobile': { prepend: '+1 ' }
   },
   validate: {
-    name: {presence: true},
+    name: { presence: true },
     age: {
       presence: true,
       numericality: {
         onlyInteger: true,
         greaterThanOrEqualTo: 21,
         lessThan: 150,
-        message: "invalid age"
+        message: 'invalid age'
       }
     },
-    "telephones.home": {
+    'telephones.home': {
       presence: true
     },
-    "telephones.work": {
+    'telephones.work': {
       presence: true
     }
   },
   static: {
-    role: "user"
+    role: 'user'
   }
 };
 
@@ -69,37 +65,38 @@ console.log(errors);
 This outputs:
 
 ```javascript
-{ 
+{
   name: 'COLIN',
   age: 17,
   telephones: { home: '+1 123', mobile: '+1 456' },
   role: 'user'
 }
-  
-{ 
+
+{
   age: [ 'Age invalid age' ],
   'telephones.work': [ 'Telephones work can\'t be blank' ]
 }
 ```
 
-Async Usage
----
+## Async Usage
+
 Simply add `async: true` to the options when you instantiate your model. Each transformation you apply to the model will then return a Promise that will resolve with the result of the transformation. If there are validation errors the promise will be rejected with the list of errors.
 
 ```javascript
 testModelOptions.async = true;
-testUser.process()
-  .then(function(results) {
+testUser.process().then(
+  function (results) {
     console.log('Yeah! Validation successful');
     console.log(results);
-  }, function(errors) {
+  },
+  function (errors) {
     console.log('Oh snap, there were validation errors');
     console.log(errors);
-  });
+  }
+);
 ```
 
-API
----
+## API
 
 ### Creating your model
 
@@ -145,6 +142,7 @@ sanitize: {
 ```
 
 Sanitize functions: (see the [Validator.js documentation](https://github.com/chriso/validator.js))
+
 - toString
 - toDate
 - toFloat
@@ -189,7 +187,7 @@ A list of static fields and their values that will be merged on top of your data
 
 ```javascript
 static: {
-  type: 'blog_post'
+  type: 'blog_post';
 }
 ```
 
@@ -215,13 +213,20 @@ For async use the results are returned as each promise resolves. Validation erro
 var results = blogEntry.validate().sanitize().results;
 ```
 
-Changes
----
+## Changes
+
+### 0.3.0, 0.4.0 (July 2019 & April 19, 2020)
+
+_Breaking_ only if your runtime is outdated:
+
+- Replaced Bluebird with native Promises
+- Refactored to ES6 syntax (const & let instead var, SofaModel as class)
+- Dependency updates
 
 ### 0.2.0 (August 21, 2015)
 
-* **Breaking:** Updated dependencies and there were some breaking changes in [Validate.js](http://validatejs.org), which could cause your models to behave differently. Specifically when you write custom async validators, you must use Promise.resolve(err) instead of reject. See their documentation for details.
+- **Breaking:** Updated dependencies and there were some breaking changes in [Validate.js](http://validatejs.org), which could cause your models to behave differently. Specifically when you write custom async validators, you must use Promise.resolve(err) instead of reject. See their documentation for details.
 
 ### 0.1.0 (March 7, 2015)
 
-* Initial release
+- Initial release
