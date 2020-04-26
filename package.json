@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sl-nx/sofa-model.git"
+    "url": "git+https://github.com/sl-nx/sofa-model.git"
   },
   "scripts": {
     "test": "gulp",
@@ -35,5 +35,12 @@
     "gulp-mocha": "^7.0.2",
     "mocha": "^7.1.2",
     "prettier": "^2.0.5"
+  },
+  "bugs": {
+    "url": "https://github.com/sl-nx/sofa-model/issues"
+  },
+  "homepage": "https://github.com/sl-nx/sofa-model#readme",
+  "directories": {
+    "test": "test"
   }
 }

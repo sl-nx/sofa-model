@@ -49,8 +49,8 @@ declare namespace Sofa {
     merge: Function;
   }
 
-  export class AsyncModel extends Model {
-    new(record: any): AsyncModel;
+  export interface AsyncModel extends Model {
+    new (record: any): AsyncModel;
 
     /** Processes the passed record according to the initialized model options */
     process: () => Promise<any>;
@@ -70,8 +70,8 @@ declare namespace Sofa {
     merge: () => Promise<any>;
   }
 
-  export class SyncModel extends Model {
-    new(record: any): SyncModel;
+  export interface SyncModel extends Model {
+    new (record: any): SyncModel;
 
     /** Processes the passed record according to the initialized model options */
     process: () => this;
@@ -82,7 +82,7 @@ declare namespace Sofa {
     /** A list of fields that are allowed to be present in your output data. If the Whitelist option is specified, any field not specifically whitelisted will be removed. */
     whitelist: () => this;
     /** A list of fields that are not allowed in your output data. Any field specified under blacklist will be removed if present. */
-    blacklist?: () => this;
+    blacklist: () => this;
     /** An object where the keys are the fields you want to rename, and the values are what you want to change them to. */
     rename: () => this;
     /** A list of static fields and their values that will be merged on top of your data. */
