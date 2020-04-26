@@ -1,7 +1,7 @@
 import validate from 'validate.js';
 
 declare namespace Sofa {
-  interface Options {
+  export interface Options {
     /** If any of your passed custom validation functions make asynchronous calls, this must be set to true. */
     async?: boolean;
     /** Here you can specify additional validation functions that are not included in Validate.js */
@@ -28,16 +28,29 @@ declare namespace Sofa {
   }
 
   export interface SyncOptions extends Options {
-    /** If any of your passed custom validation functions make asynchronous calls, this must be set to true. */
+    /** If you're only providing synchronous validations and are not expecting a Promise as results, set to false. */
     async?: false;
   }
 
-  export interface AsyncModel {
-    new (record: any): AsyncModel;
+  interface Model {
+    new (record: any): Model;
 
     results: any;
     validator: validate.ValidateJS;
     errors: any;
+
+    process: Function;
+    validate: Function;
+    sanitize: Function;
+    whitelist: Function;
+    blacklist: Function;
+    rename: Function;
+    static: Function;
+    merge: Function;
+  }
+
+  export class AsyncModel extends Model {
+    new(record: any): AsyncModel;
 
     /** Processes the passed record according to the initialized model options */
     process: () => Promise<any>;
@@ -48,7 +61,7 @@ declare namespace Sofa {
     /** A list of fields that are allowed to be present in your output data. If the Whitelist option is specified, any field not specifically whitelisted will be removed. */
     whitelist: () => Promise<any>;
     /** A list of fields that are not allowed in your output data. Any field specified under blacklist will be removed if present. */
-    blacklist?: () => Promise<any>;
+    blacklist: () => Promise<any>;
     /** An object where the keys are the fields you want to rename, and the values are what you want to change them to. */
     rename: () => Promise<any>;
     /** A list of static fields and their values that will be merged on top of your data. */
@@ -57,12 +70,8 @@ declare namespace Sofa {
     merge: () => Promise<any>;
   }
 
-  export interface SyncModel {
-    new (record: any): SyncModel;
-
-    results: any;
-    validator: validate.ValidateJS;
-    errors: any;
+  export class SyncModel extends Model {
+    new(record: any): SyncModel;
 
     /** Processes the passed record according to the initialized model options */
     process: () => this;

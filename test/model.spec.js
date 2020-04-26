@@ -86,7 +86,7 @@ describe('Model', function () {
     const testUser = new user(testData);
     const results = testUser.whitelist().results;
     expect(results).to.have.property('name');
-    expect(results).to.have.deep.property('telephones.home');
+    expect(results).to.have.nested.property('telephones.home');
     expect(results).to.not.have.property('age');
   });
 
