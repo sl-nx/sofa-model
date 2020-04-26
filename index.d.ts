@@ -1,6 +1,6 @@
 import validate from 'validate.js';
 
-declare namespace Sofa {
+export namespace Sofa {
   export interface Options {
     /** If any of your passed custom validation functions make asynchronous calls, this must be set to true. */
     async?: boolean;
@@ -99,6 +99,5 @@ declare namespace Sofa {
     (options: SyncOptions): SyncModel;
   }
 }
-
 declare const SofaModel: Sofa.Factory;
-export = SofaModel;
+export default SofaModel;
