@@ -1,6 +1,6 @@
 {
   "name": "@sl-nx/sofa-model",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple model class to sanitize and validate your javascript data.",
   "main": "index.js",
   "repository": {
