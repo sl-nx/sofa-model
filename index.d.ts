@@ -99,5 +99,6 @@ export namespace Sofa {
     (options: SyncOptions): SyncModel;
   }
 }
+
 declare const SofaModel: Sofa.Factory;
 export default SofaModel;
